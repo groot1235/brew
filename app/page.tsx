@@ -1,69 +1,102 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState } from "react";
+import { Navbar } from "@/components/Navbar";
+import { Hero } from "@/components/Hero";
+import { MarqueeStrip } from "@/components/MarqueeStrip";
+import { MenuSection } from "@/components/MenuSection";
+import { StorySection } from "@/components/StorySection";
+import { GallerySection } from "@/components/GallerySection";
+import { VisitAndReserve } from "@/components/VisitAndReserve";
+import { ReviewsAndInstagram } from "@/components/ReviewsAndInstagram";
+import { Footer } from "@/components/Footer";
+import { BrewConciergeAI } from "@/components/BrewConciergeAI";
+import { Sparkles, MessageCircle, Calendar } from "lucide-react";
+import { MagneticButton } from "@/components/MagneticButton";
 
 export default function Home() {
+  const [isAIOpen, setIsAIOpen] = useState(false);
+  const [prefilledReservation, setPrefilledReservation] = useState<any>(null);
+
+  const handleOpenReserve = () => {
+    const el = document.getElementById("reserve");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handlePrefillReserve = (data: any) => {
+    setPrefilledReservation(data);
+    const el = document.getElementById("reserve");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleAskAIItem = (itemName: string) => {
+    setIsAIOpen(true);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="min-h-screen bg-[#FAF7F2] text-[#1E130D] relative selection:bg-[#D95D39]/20 selection:text-[#1E130D]">
+      {/* 1. Header & Navigation */}
+      <Navbar
+        onOpenReserve={handleOpenReserve}
+        onOpenAI={() => setIsAIOpen(true)}
+      />
+
+      {/* 2. Hero Section */}
+      <Hero
+        onOpenReserve={handleOpenReserve}
+        onOpenAI={() => setIsAIOpen(true)}
+      />
+
+      {/* 3. Marquee Strip Under Hero */}
+      <MarqueeStrip />
+
+      {/* 4. Interactive Menu Section with Tabs (Coffee / Brunch / Bakes) */}
+      <MenuSection
+        onAskAIItem={handleAskAIItem}
+        onOpenReserve={handleOpenReserve}
+      />
+
+      {/* 5. Story / Chronicle Split Section with Parallax Effect */}
+      <StorySection />
+
+      {/* 6. Gallery Masonry Grid with Hover Zoom & Lightbox */}
+      <GallerySection />
+
+      {/* 7. Visit Us & Reserve a Table Form */}
+      <VisitAndReserve prefilledData={prefilledReservation} />
+
+      {/* 8. Reviews Marquee & Instagram Grid */}
+      <ReviewsAndInstagram />
+
+      {/* 9. Editorial Footer */}
+      <Footer />
+
+      {/* 10. Floating Interactive AI Concierge Button */}
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-2">
+        <MagneticButton
+          onClick={() => setIsAIOpen(true)}
+          className="group px-4 py-3 sm:px-5 sm:py-3.5 rounded-full bg-[#1E130D] hover:bg-[#D95D39] text-[#FAF7F2] shadow-2xl hover:shadow-[#D95D39]/30 transition-all duration-300 border border-[#FAF7F2]/20 flex items-center gap-2.5 cursor-pointer text-xs sm:text-sm font-medium"
+        >
+          <div className="w-6 h-6 rounded-full bg-[#D95D39] group-hover:bg-[#1E130D] flex items-center justify-center transition-colors">
+            <Sparkles className="w-3.5 h-3.5 text-[#FAF7F2]" />
+          </div>
+          <span className="font-mono uppercase tracking-wider font-semibold">
+            Ask Brew Concierge
+          </span>
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+        </MagneticButton>
+      </div>
+
+      {/* 11. AI Concierge Modal / Drawer */}
+      <BrewConciergeAI
+        isOpen={isAIOpen}
+        onClose={() => setIsAIOpen(false)}
+        onPrefillReserve={handlePrefillReserve}
+      />
+    </main>
   );
 }
